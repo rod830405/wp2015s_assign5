@@ -21,5 +21,18 @@ var skycons = new Skycons();
 Get value from Bootstrap dropdown menu
 */
 $('#dropdown li').on('click', function(){
-    alert($(this).text());
+    var cities = $(this).text();
+  var queryString = 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="' + cities + '")';
+			$.ajax({
+				url: 'https://query.yahooapis.com/v1/public/yql',
+				data: {
+					format: 'json',
+					q: queryString,
+				},
+				success: function(data) {
+				    console.log(data.query.results);
+				}
+			});
+ 
 });
+
